@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Contextual Learning Assistant",
+  "version": "0.1.0",
+  "description": "Ask questions about the current learning page and get teacher-level explanations.",
+  "permissions": ["storage", "activeTab", "scripting", "identity"],
+  "host_permissions": [
+    "https://www.geeksforgeeks.org/*",
+    "https://leetcode.com/*",
+    "https://www.w3schools.com/*",
+    "https://www.googleapis.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.geeksforgeeks.org/*",
+        "https://leetcode.com/*",
+        "https://www.w3schools.com/*"
+      ],
+      "js": ["src/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "oauth2": {
+    "client_id": "YOUR_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/drive.file"]
+  },
+  "action": {
+    "default_title": "Open Learning Assistant"
+  }
+}
