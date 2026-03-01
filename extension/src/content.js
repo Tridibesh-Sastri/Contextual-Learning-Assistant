@@ -100,22 +100,68 @@ function createOverlay() {
         all: initial;
       }
       .cla-root {
-        font-family: "Space Grotesk", "Rubik", "Segoe UI", sans-serif;
+        font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
         position: fixed;
         right: 22px;
         bottom: 24px;
         z-index: 2147483647;
       }
       .cla-fab {
-        background: linear-gradient(135deg, #f2b94b, #f7d36b);
-        color: #1f1a10;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
         border: none;
-        border-radius: 999px;
-        padding: 10px 16px;
-        font-size: 13px;
-        font-weight: 700;
+        background: radial-gradient(circle at 30% 20%, rgba(160, 190, 255, 0.35), rgba(30, 40, 70, 0.85));
+        color: transparent;
+        display: grid;
+        place-items: center;
         cursor: pointer;
-        box-shadow: 0 12px 24px rgba(15, 18, 20, 0.35);
+        box-shadow:
+          0 14px 40px rgba(0, 0, 0, 0.45),
+          0 0 0 1px rgba(120, 190, 255, 0.25),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(8px);
+        animation: cla-float 10s ease-in-out infinite;
+      }
+      .cla-fab svg {
+        width: 32px;
+        height: 32px;
+        filter: drop-shadow(0 0 6px rgba(120, 200, 255, 0.45));
+        opacity: 0.9;
+        animation: cla-pulse 10s ease-in-out infinite;
+      }
+      .cla-fab:hover {
+        transform: translateY(-2px) rotateX(6deg) rotateY(-6deg);
+        box-shadow:
+          0 18px 55px rgba(0, 0, 0, 0.45),
+          0 0 12px rgba(120, 190, 255, 0.35);
+      }
+      .cla-fab:active {
+        animation: cla-vortex 420ms ease both;
+      }
+      .cla-fab-label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @keyframes cla-float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-2px); }
+      }
+      @keyframes cla-pulse {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 1; }
+      }
+      @keyframes cla-vortex {
+        0% { transform: scale(1) rotate(0deg); }
+        70% { transform: scale(0.92) rotate(180deg); }
+        100% { transform: scale(0.2) rotate(360deg); opacity: 0.2; }
       }
       .cla-panel {
         width: 380px;
@@ -127,26 +173,56 @@ function createOverlay() {
         margin-bottom: 12px;
         border-radius: 18px;
         --cla-panel-opacity: 0.9;
-        background: linear-gradient(
-          160deg,
-          rgba(9, 19, 22, var(--cla-panel-opacity)),
-          rgba(17, 32, 35, var(--cla-panel-opacity))
-        );
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
-        backdrop-filter: blur(10px);
+        position: relative;
+        background:
+          radial-gradient(120% 120% at 12% 12%, rgba(120, 190, 255, 0.08), transparent 55%),
+          radial-gradient(120% 120% at 90% 10%, rgba(160, 120, 255, 0.06), transparent 55%),
+          linear-gradient(
+            165deg,
+            rgba(10, 16, 26, var(--cla-panel-opacity)),
+            rgba(14, 22, 34, var(--cla-panel-opacity))
+          );
+        border: 1px solid rgba(120, 170, 255, 0.12);
+        box-shadow:
+          0 22px 60px rgba(0, 0, 0, 0.5),
+          0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+        backdrop-filter: blur(16px) saturate(130%);
         display: none;
         flex-direction: column;
         overflow: hidden;
         resize: both;
         box-sizing: border-box;
-        animation: cla-rise 220ms ease;
+      }
+      .cla-panel::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.08)),
+          url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.08'/></svg>");
+        mix-blend-mode: soft-light;
+        pointer-events: none;
       }
       .cla-panel:hover {
         cursor: nwse-resize;
       }
       .cla-panel.open {
         display: flex;
+        animation: cla-genie 420ms cubic-bezier(0.18, 0.9, 0.22, 1.08) both;
+        transform-origin: bottom right;
+      }
+      .cla-panel > * {
+        position: relative;
+        z-index: 1;
+      }
+      .cla-ambient {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        opacity: 0.35;
+        pointer-events: none;
       }
       .cla-resize-handle {
         position: absolute;
@@ -154,20 +230,15 @@ function createOverlay() {
         bottom: 6px;
         width: 16px;
         height: 16px;
-        border-right: 2px solid rgba(255, 255, 255, 0.4);
-        border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+        border-right: 2px solid rgba(120, 190, 255, 0.35);
+        border-bottom: 2px solid rgba(160, 120, 255, 0.35);
         border-radius: 2px;
         pointer-events: none;
       }
-      @keyframes cla-rise {
-        from {
-          opacity: 0;
-          transform: translateY(12px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+      @keyframes cla-genie {
+        0% { opacity: 0; transform: translateY(18px) scaleY(0.15) scaleX(0.75); filter: blur(2px); }
+        60% { opacity: 1; transform: translateY(0) scaleY(1.02) scaleX(1.01); filter: blur(0); }
+        100% { opacity: 1; transform: translateY(0) scaleY(1) scaleX(1); }
       }
       .cla-header {
         padding: 14px 16px 10px;
@@ -197,20 +268,24 @@ function createOverlay() {
         overflow-y: auto;
         padding: 12px 16px;
         color: #e5ecef;
+        line-height: 1.55;
       }
       .cla-message {
-        background: rgba(20, 34, 38, 0.85);
+        background: rgba(20, 28, 38, 0.8);
         border-radius: 12px;
         padding: 10px 12px;
         margin-bottom: 10px;
-        line-height: 1.45;
-        font-size: 12px;
+        line-height: 1.55;
+        font-size: 12.5px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
       }
       .cla-message.user {
-        border-left: 3px solid #f2b94b;
+        background: rgba(14, 22, 32, 0.85);
+        border-left: 3px solid rgba(120, 190, 255, 0.35);
       }
       .cla-message.assistant {
-        border-left: 3px solid #64d4c8;
+        background: linear-gradient(180deg, rgba(110, 190, 255, 0.1), rgba(255, 255, 255, 0.03));
+        border-left: 3px solid rgba(160, 120, 255, 0.35);
       }
       .cla-controls {
         padding: 12px 14px 14px;
@@ -221,20 +296,26 @@ function createOverlay() {
         display: flex;
         gap: 6px;
         margin-bottom: 10px;
+        padding: 4px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
       }
       .cla-mode {
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 0;
         background: transparent;
-        color: #d9e2e6;
-        padding: 4px 10px;
-        border-radius: 999px;
+        color: rgba(220, 232, 255, 0.75);
+        padding: 5px 10px;
+        border-radius: 10px;
         font-size: 11px;
         cursor: pointer;
+        transition: background 220ms ease, color 220ms ease, box-shadow 220ms ease;
       }
       .cla-mode.active {
-        background: #f2b94b;
-        color: #1f1a10;
-        font-weight: 700;
+        background: rgba(120, 190, 255, 0.14);
+        color: rgba(235, 248, 255, 0.95);
+        font-weight: 600;
+        box-shadow: 0 0 0 1px rgba(120, 190, 255, 0.2);
       }
       .cla-input-row {
         display: flex;
@@ -246,17 +327,19 @@ function createOverlay() {
         border-radius: 12px;
         border: 1px solid rgba(255, 255, 255, 0.12);
         padding: 8px 10px;
-        background: rgba(10, 16, 18, 0.9);
+        background: rgba(10, 16, 22, 0.9);
         color: #f0f4f6;
         font-size: 12px;
       }
       .cla-send {
-        background: #f2b94b;
+        background: linear-gradient(135deg, rgba(110, 190, 255, 0.35), rgba(160, 120, 255, 0.28));
         border: none;
         border-radius: 12px;
         padding: 0 14px;
         font-weight: 700;
+        color: #eaf2ff;
         cursor: pointer;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
       }
       .cla-status {
         margin-top: 8px;
@@ -535,6 +618,7 @@ function createOverlay() {
     </style>
     <div class="cla-root">
       <section class="cla-panel" id="cla-panel">
+        <canvas class="cla-ambient" id="cla-ambient" aria-hidden="true"></canvas>
         <div class="cla-header">
           <div>
             <div class="cla-title">Learning Assistant</div>
@@ -608,7 +692,15 @@ function createOverlay() {
         </div>
       </section>
       <span class="cla-resize-handle" aria-hidden="true"></span>
-      <button class="cla-fab" id="cla-fab">Guider</button>
+      <button class="cla-fab" id="cla-fab" aria-label="Open guide">
+        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M20 18c-6 2-10 8-10 14 0 5 2 10 6 13m28-27c6 2 10 8 10 14 0 5-2 10-6 13" stroke="rgba(150,220,255,0.9)" stroke-width="2" stroke-linecap="round" />
+          <path d="M22 20c-4 3-6 8-6 12 0 5 2 9 5 12m24-24c4 3 6 8 6 12 0 5-2 9-5 12" stroke="rgba(190,150,255,0.7)" stroke-width="2" stroke-linecap="round" />
+          <circle cx="32" cy="32" r="10" stroke="rgba(170,210,255,0.9)" stroke-width="2" />
+          <path d="M32 22v20M22 32h20" stroke="rgba(120,200,255,0.6)" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        <span class="cla-fab-label">Guider</span>
+      </button>
     </div>
   `;
 
@@ -1331,6 +1423,65 @@ function createOverlay() {
   saveSettingsButton.addEventListener("click", saveSettings);
 
   loadSettings();
+  initAmbientThree(shadow);
+}
+
+async function initAmbientThree(shadow) {
+  const canvas = shadow.getElementById("cla-ambient");
+  if (!canvas) return;
+
+  try {
+    const threeUrl = chrome.runtime.getURL("vendor/three.module.js");
+    const THREE = await import(threeUrl);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.z = 3;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const points = new THREE.BufferGeometry();
+    const count = 140;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i += 1) {
+      positions[i * 3] = (Math.random() - 0.5) * 3.2;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 3.2;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 2.0;
+    }
+    points.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+    const material = new THREE.PointsMaterial({
+      color: 0x7bbcff,
+      size: 0.015,
+      transparent: true,
+      opacity: 0.5
+    });
+
+    const cloud = new THREE.Points(points, material);
+    scene.add(cloud);
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      renderer.setSize(rect.width, rect.height, false);
+      camera.aspect = rect.width / rect.height;
+      camera.updateProjectionMatrix();
+    };
+    resize();
+    new ResizeObserver(resize).observe(canvas);
+
+    let t = 0;
+    const tick = () => {
+      t += 0.0015;
+      cloud.rotation.y = t * 0.25;
+      cloud.rotation.x = t * 0.12;
+      renderer.render(scene, camera);
+      requestAnimationFrame(tick);
+    };
+    tick();
+  } catch (error) {
+    console.warn("[CLA] Three.js ambient layer skipped:", error);
+  }
 }
 
 function initOverlay() {
