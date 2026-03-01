@@ -1,6 +1,6 @@
 <div align="center">
 	<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&duration=3000&pause=800&color=6DE0FF&center=true&vCenter=true&width=700&lines=Contextual+Learning+Assistant;Futuristic+AI+Learning+Overlay;Chrome+Extension+%2B+Node.js+Proxy" alt="Typing banner" />
-	<h1>Contextual Learning Assistant</h1>
+	<h1>CHITRIX {Contextual Learning Assistant}</h1>
 	<p><em>Minimal sci-fi learning overlay for the modern web, powered by local AI.</em></p>
 	<p>
 		<img src="https://img.shields.io/badge/Chrome%20Extension-MV3-0b1220?style=for-the-badge&logo=google-chrome&logoColor=6DE0FF" alt="Chrome Extension" />
