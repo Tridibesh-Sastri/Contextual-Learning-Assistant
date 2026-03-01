@@ -259,6 +259,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
+  if (message.type === "openHistory") {
+    (async () => {
+      const url = chrome.runtime.getURL("history.html");
+      await chrome.tabs.create({ url });
+      sendResponse({ ok: true });
+    })();
+    return true;
+  }
+
   if (message.type === "saveApiKey") {
     (async () => {
       try {

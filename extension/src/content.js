@@ -107,34 +107,59 @@ function createOverlay() {
         z-index: 2147483647;
       }
       .cla-fab {
-        width: 56px;
-        height: 56px;
+        width: 64px;
+        height: 64px;
         border-radius: 50%;
         border: none;
-        background: radial-gradient(circle at 30% 20%, rgba(160, 190, 255, 0.35), rgba(30, 40, 70, 0.85));
+        background:
+          radial-gradient(circle at 30% 24%, rgba(235, 240, 255, 0.7), rgba(150, 175, 230, 0.3) 38%, rgba(28, 40, 78, 0.96) 70%),
+          linear-gradient(165deg, rgba(96, 126, 200, 0.95), rgba(48, 60, 108, 0.98));
         color: transparent;
         display: grid;
         place-items: center;
         cursor: pointer;
         box-shadow:
-          0 14px 40px rgba(0, 0, 0, 0.45),
-          0 0 0 1px rgba(120, 190, 255, 0.25),
-          inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+          0 18px 44px rgba(0, 0, 0, 0.45),
+          0 0 0 1px rgba(165, 200, 255, 0.35),
+          inset 0 0 26px rgba(120, 160, 255, 0.28),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.12);
         backdrop-filter: blur(8px);
+        position: relative;
+        overflow: hidden;
         animation: cla-float 10s ease-in-out infinite;
       }
-      .cla-fab svg {
-        width: 32px;
-        height: 32px;
-        filter: drop-shadow(0 0 6px rgba(120, 200, 255, 0.45));
+      .cla-fab::before {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 42% 38%, rgba(160, 205, 255, 0.42), rgba(110, 130, 210, 0.22) 60%, rgba(40, 52, 90, 0.12));
+        box-shadow: inset 0 0 16px rgba(120, 190, 255, 0.25);
         opacity: 0.9;
-        animation: cla-pulse 10s ease-in-out infinite;
+      }
+      .cla-fab::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        box-shadow: 0 0 24px rgba(120, 190, 255, 0.4), 0 0 30px rgba(200, 140, 255, 0.28);
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      .cla-fab svg {
+        width: 42px;
+        height: 42px;
+        filter: drop-shadow(0 0 12px rgba(130, 200, 255, 0.6));
+        opacity: 0.95;
+        animation: cla-pulse 12s ease-in-out infinite;
+        z-index: 1;
       }
       .cla-fab:hover {
         transform: translateY(-2px) rotateX(6deg) rotateY(-6deg);
         box-shadow:
           0 18px 55px rgba(0, 0, 0, 0.45),
-          0 0 12px rgba(120, 190, 255, 0.35);
+          0 0 16px rgba(120, 190, 255, 0.45),
+          0 0 24px rgba(170, 130, 255, 0.35);
       }
       .cla-fab:active {
         animation: cla-vortex 420ms ease both;
@@ -155,7 +180,7 @@ function createOverlay() {
         50% { transform: translateY(-2px); }
       }
       @keyframes cla-pulse {
-        0%, 100% { opacity: 0.8; }
+        0%, 100% { opacity: 0.85; }
         50% { opacity: 1; }
       }
       @keyframes cla-vortex {
@@ -399,6 +424,20 @@ function createOverlay() {
         color: #0b1c1b;
         font-weight: 700;
         cursor: pointer;
+      }
+      .cla-history {
+        width: 100%;
+        border: 1px solid rgba(120, 190, 255, 0.35);
+        padding: 8px 10px;
+        border-radius: 10px;
+        background: rgba(12, 18, 28, 0.6);
+        color: rgba(230, 240, 255, 0.95);
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+      }
+      .cla-history:hover {
+        background: rgba(20, 30, 44, 0.7);
       }
       .md-root {
         display: flex;
@@ -681,6 +720,10 @@ function createOverlay() {
               <button class="cla-save" id="cla-export">Export CSV</button>
             </div>
             <div class="cla-field">
+              <label>Doubt history</label>
+              <button class="cla-history" id="cla-history">View History</button>
+            </div>
+            <div class="cla-field">
               <label>Transparency</label>
               <div class="cla-range-row">
                 <input id="cla-opacity" type="range" min="0.6" max="1" step="0.05" />
@@ -693,11 +736,11 @@ function createOverlay() {
       </section>
       <span class="cla-resize-handle" aria-hidden="true"></span>
       <button class="cla-fab" id="cla-fab" aria-label="Open guide">
-        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-          <path d="M20 18c-6 2-10 8-10 14 0 5 2 10 6 13m28-27c6 2 10 8 10 14 0 5-2 10-6 13" stroke="rgba(150,220,255,0.9)" stroke-width="2" stroke-linecap="round" />
-          <path d="M22 20c-4 3-6 8-6 12 0 5 2 9 5 12m24-24c4 3 6 8 6 12 0 5-2 9-5 12" stroke="rgba(190,150,255,0.7)" stroke-width="2" stroke-linecap="round" />
-          <circle cx="32" cy="32" r="10" stroke="rgba(170,210,255,0.9)" stroke-width="2" />
-          <path d="M32 22v20M22 32h20" stroke="rgba(120,200,255,0.6)" stroke-width="1.5" stroke-linecap="round" />
+        <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
+          <circle cx="60" cy="60" r="22" stroke="rgba(191, 202, 255, 0.9)" stroke-width="2" />
+          <path d="M60 44l14 24H46l14-24z" stroke="rgba(214, 221, 255, 0.95)" stroke-width="2" stroke-linejoin="round" />
+          <path d="M34 60c0-10 12-18 26-18s26 8 26 18" stroke="rgba(109, 224, 255, 0.9)" stroke-width="3" stroke-linecap="round" />
+          <path d="M34 60c0 10 12 18 26 18s26-8 26-18" stroke="rgba(242, 161, 214, 0.85)" stroke-width="3" stroke-linecap="round" />
         </svg>
         <span class="cla-fab-label">Guider</span>
       </button>
@@ -726,6 +769,7 @@ function createOverlay() {
   const opacityValue = shadow.getElementById("cla-opacity-value");
   const saveSettingsButton = shadow.getElementById("cla-save");
   const exportButton = shadow.getElementById("cla-export");
+  const historyButton = shadow.getElementById("cla-history");
   const localModelField = shadow.getElementById("cla-local-model-field");
   const cloudVendorField = shadow.getElementById("cla-cloud-vendor-field");
   const cloudModelField = shadow.getElementById("cla-cloud-model-field");
@@ -1419,6 +1463,9 @@ function createOverlay() {
     } catch (error) {
       setStatus("Export failed");
     }
+  });
+  historyButton.addEventListener("click", () => {
+    chrome.runtime.sendMessage({ type: "openHistory" });
   });
   saveSettingsButton.addEventListener("click", saveSettings);
 

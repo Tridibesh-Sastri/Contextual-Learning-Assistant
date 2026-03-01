@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chitrix — History</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/chitrix-favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="assets/chitrix-favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="assets/chitrix-favicon-64.png" />
+    <link rel="stylesheet" href="history.css" />
+  </head>
+  <body>
+    <header class="history-topbar" aria-label="Chitrix history header">
+      <div class="history-brand">
+        <img class="history-logo" src="chitrix logo png.png" alt="Chitrix logo" />
+        <div class="history-brand-text">
+          <div class="history-brand-title">Chitrix</div>
+          <div class="history-brand-subtitle">History</div>
+        </div>
+      </div>
+    </header>
+    <div class="history-shell" id="history-shell">
+      <aside class="history-sidebar left" aria-label="Website filter">
+        <div class="sidebar-header">
+          <div class="brand">
+            <div class="brand-title">Learning Archive</div>
+            <div class="brand-subtitle">Doubt History</div>
+          </div>
+          <button class="sidebar-toggle" id="toggle-left" aria-label="Toggle website sidebar">◀</button>
+        </div>
+        <nav class="site-tabs" role="tablist">
+          <button class="site-tab" data-site="gfg" role="tab" aria-selected="false">
+            <span class="site-icon" aria-hidden="true"></span>
+            <span class="site-label">GeeksforGeeks</span>
+          </button>
+          <button class="site-tab" data-site="w3schools" role="tab" aria-selected="false">
+            <span class="site-icon" aria-hidden="true"></span>
+            <span class="site-label">W3Schools</span>
+          </button>
+          <button class="site-tab" data-site="leetcode" role="tab" aria-selected="false">
+            <span class="site-icon" aria-hidden="true"></span>
+            <span class="site-label">LeetCode</span>
+          </button>
+        </nav>
+      </aside>
+
+      <main class="history-main">
+        <header class="history-header">
+          <div>
+            <div class="header-title">Doubt Timeline</div>
+            <div class="header-subtitle">Review your learning sessions with calm, structured focus.</div>
+          </div>
+          <button class="sidebar-toggle" id="toggle-right" aria-label="Toggle document sidebar">Docs</button>
+        </header>
+
+        <section class="history-timeline" aria-label="Doubt timeline">
+          <div class="timeline-header">Timeline</div>
+          <div class="timeline-track" id="timeline-track"></div>
+        </section>
+
+        <section class="history-list" aria-label="Doubt list">
+          <div class="list-header">Doubts</div>
+          <div class="list-body" id="doubt-list"></div>
+        </section>
+      </main>
+
+      <aside class="history-sidebar right" aria-label="Document selector">
+        <div class="sidebar-header">
+          <div class="brand">
+            <div class="brand-title">Documents</div>
+            <div class="brand-subtitle">Grouped by page</div>
+          </div>
+          <button class="sidebar-toggle" id="toggle-right-alt" aria-label="Toggle document sidebar">▶</button>
+        </div>
+        <div class="document-list" id="document-list"></div>
+      </aside>
+    </div>
+
+    <script src="history.js"></script>
+  </body>
+</html>
