@@ -20,7 +20,7 @@
 
 ## Hero Banner (Animated)
 <div align="center">
-	<img src="https://placehold.co/860x420/0b1220/6de0ff?text=Demo+GIF+Placeholder" alt="Demo placeholder" />
+	<img src="/extension/Chitrix_Animation_Cosmic_to_Computer.gif" alt="Demo placeholder" />
 </div>
 
 ## Project Overview (Premium Styled)
